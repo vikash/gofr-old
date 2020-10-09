@@ -36,8 +36,12 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build artifacts
-        path: build
-
+        path: build 
+   
+    - name: Coveralls
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
   code_quality:
     name: Code Quality
