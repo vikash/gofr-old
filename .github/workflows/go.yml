@@ -32,17 +32,13 @@ jobs:
         cat build/coverage.txt | grep -v '.pb.go' > build/coverage.out
         go tool cover -func build/coverage.out
 
-    - name: Upload coverage artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: build artifacts
-        path: build 
-   
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: build/coverage.txt
+    - name: Install goveralls
+      run: go get github.com/mattn/goveralls
+      
+    - name: Send coverage
+      env:
+        COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: goveralls -coverprofile=covprofile -service=github
 
   code_quality:
     name: Code Quality
