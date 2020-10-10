@@ -41,7 +41,8 @@ jobs:
       env: 
         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
       with: 
-        coverageLocations: ${{github.workspace}}/profile.cov:gocov
+        coverageCommand: go test ./... -v -coverprofile profile.cov -coverpkg=./...
+        coverageLocations: profile.cov:gocov
   
   code_quality:
     name: Code Quality
