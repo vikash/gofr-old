@@ -35,8 +35,6 @@ func TestSimpleAPIServer(t *testing.T) {
 
 		if resp != nil && resp.StatusCode != tc.statusCode {
 			t.Errorf("Failed. \t Expected %v\t Got %v", tc.statusCode, resp.StatusCode)
-		} else {
-			t.Logf("Passed for URL: %v\t Got %v", tc.path, tc.statusCode)
 		}
 	}
 }
