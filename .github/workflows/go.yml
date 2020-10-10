@@ -27,19 +27,14 @@ jobs:
 
     - name: Test
       run: |
-        mkdir build
-        go test ./... -v -coverprofile build/coverage.txt -coverpkg=./...
-        cat build/coverage.txt | grep -v '.pb.go' > build/coverage.out
-        go tool cover -func build/coverage.out
-
-    - name: Install goveralls
-      run: go get github.com/mattn/goveralls
+        go test ./... -v -coverprofile profile.cov -coverpkg=./...
+        go tool cover -func profile.cov
       
     - name: Send coverage
-      env:
-        COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: goveralls -coverprofile=build/coverage.txt -service=github
-
+      uses: shogo82148/actions-goveralls@v1
+      with: 
+        path-to-profile: profile.cov
+        parallel: true
   code_quality:
     name: Code Quality
     runs-on: ubuntu-latest
