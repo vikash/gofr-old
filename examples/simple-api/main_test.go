@@ -20,6 +20,9 @@ func TestSimpleAPIServer(t *testing.T) {
 		{"/hello", 200, "Hello World!"},
 		{"/hello?name=gofr", 200, "Hello gofr!"},
 		{"/error", 500, ""},
+		{"/redis", 200, ""},
+		{"/mysql", 200, ""},
+		{"/trace", 200, ""},
 	}
 
 	for _, tc := range testcases {
