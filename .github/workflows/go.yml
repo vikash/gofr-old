@@ -56,7 +56,6 @@ jobs:
       with: 
         debug: true
         coverageLocations: profile.cov:gocov
-        coverageCommand: go test ./... -coverprofile profile.cov
         prefix: github.com/vikash/gofr
   
   code_quality:
