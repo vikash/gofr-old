@@ -1,4 +1,4 @@
-package testUtil
+package testutil
 
 import (
 	"io/ioutil"
@@ -13,6 +13,7 @@ func StdoutOutputForFunc(f func()) string {
 	f()
 
 	w.Close()
+
 	out, _ := ioutil.ReadAll(r)
 	os.Stdout = old
 
@@ -27,6 +28,7 @@ func StderrOutputForFunc(f func()) string {
 	f()
 
 	w.Close()
+
 	out, _ := ioutil.ReadAll(r)
 	os.Stderr = old
 

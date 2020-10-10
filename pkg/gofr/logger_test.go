@@ -3,20 +3,20 @@ package gofr
 import (
 	"testing"
 
-	"github.com/vikash/gofr/pkg/gofr/testUtil"
+	"github.com/vikash/gofr/pkg/gofr/testutil"
 )
 
-func TestLogger_Log(t *testing.T) {
+const testLogStatement = "hello log!"
 
-	logStatement := "hello log!"
-	expectedLog := "hello log!\n"
+func TestLogger_Log(t *testing.T) {
+	expectedLog := testLogStatement + "\n" // Note that Log always adds a new line.
 
 	f := func() {
 		logger := newLogger()
-		logger.Log(logStatement)
+		logger.Log(testLogStatement)
 	}
 
-	output := testUtil.StdoutOutputForFunc(f)
+	output := testutil.StdoutOutputForFunc(f)
 
 	if output != expectedLog {
 		t.Errorf("Stdout mismatch. Expected: %s Got: %s", expectedLog, output)
@@ -24,33 +24,27 @@ func TestLogger_Log(t *testing.T) {
 }
 
 func TestLogger_Logf(t *testing.T) {
-
-	logStatement := "hello log!"
-	expectedLog := "hello log!"
-
 	f := func() {
 		logger := newLogger()
-		logger.Logf("%s", logStatement)
+		logger.Logf("%s", testLogStatement)
 	}
 
-	output := testUtil.StdoutOutputForFunc(f)
+	output := testutil.StdoutOutputForFunc(f)
 
-	if output != expectedLog {
-		t.Errorf("Stdout mismatch. Expected: %s Got: %s", expectedLog, output)
+	if output != testLogStatement {
+		t.Errorf("Stdout mismatch. Expected: %s Got: %s", testLogStatement, output)
 	}
 }
 
 func TestLogger_Error(t *testing.T) {
-
-	logStatement := "hello error!"
-	expectedLog := "hello error!\n"
+	expectedLog := testLogStatement + "\n" // Note that Error always adds a new line.
 
 	f := func() {
 		logger := newLogger()
-		logger.Error(logStatement)
+		logger.Error(testLogStatement)
 	}
 
-	output := testUtil.StderrOutputForFunc(f)
+	output := testutil.StderrOutputForFunc(f)
 
 	if output != expectedLog {
 		t.Errorf("Stdout mismatch. Expected: %s Got: %s", expectedLog, output)
@@ -58,18 +52,14 @@ func TestLogger_Error(t *testing.T) {
 }
 
 func TestLogger_Errorf(t *testing.T) {
-
-	logStatement := "hello error!"
-	expectedLog := "hello error!"
-
 	f := func() {
 		logger := newLogger()
-		logger.Errorf("%s", logStatement)
+		logger.Errorf("%s", testLogStatement)
 	}
 
-	output := testUtil.StderrOutputForFunc(f)
+	output := testutil.StderrOutputForFunc(f)
 
-	if output != expectedLog {
-		t.Errorf("Stdout mismatch. Expected: %s Got: %s", expectedLog, output)
+	if output != testLogStatement {
+		t.Errorf("Stdout mismatch. Expected: %s Got: %s", testLogStatement, output)
 	}
 }
