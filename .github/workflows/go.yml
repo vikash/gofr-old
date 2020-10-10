@@ -43,7 +43,7 @@ jobs:
       with: 
         debug: true
         coverageLocations: profile.cov:gocov
-        prefix: github.com/vikash
+        prefix: github.com/vikash/gofr
   
   code_quality:
     name: Code Quality
