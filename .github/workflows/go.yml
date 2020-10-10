@@ -41,7 +41,7 @@ jobs:
       env: 
         CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
       with: 
-        coverageLocations: profile.cov:cover
+        coverageLocations: profile.cov:gocov
   
   code_quality:
     name: Code Quality
