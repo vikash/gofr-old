@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 
 	"github.com/vikash/gofr/pkg/gofr/testutil"
@@ -12,5 +13,14 @@ func TestCMDRunWithNoArg(t *testing.T) {
 	output := testutil.StderrOutputForFunc(main)
 	if output != expectedError {
 		t.Errorf("Expected: %s\n Got: %s", expectedError, output)
+	}
+}
+
+func TestCMDRunWithProperArg(t *testing.T) {
+	expectedOutput := "Hello World!"
+	os.Args = []string{"command", "hello"}
+	output := testutil.StdoutOutputForFunc(main)
+	if output != expectedOutput {
+		t.Errorf("Expected: %s\n Got: %s", expectedOutput, output)
 	}
 }
