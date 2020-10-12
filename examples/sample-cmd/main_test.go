@@ -10,7 +10,7 @@ import (
 func TestCMDRunWithNoArg(t *testing.T) {
 	expectedError := "No Command Found!"
 	output := testutil.StderrOutputForFunc(main)
-	if output != "No Command Found!" {
+	if output != expectedError {
 		t.Errorf("Expected: %s\n Got: %s", expectedError, output)
 	}
 }

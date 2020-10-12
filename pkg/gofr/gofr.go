@@ -13,7 +13,7 @@ import (
 	"github.com/vikash/gofr/pkg/gofr/config"
 	"go.opentelemetry.io/otel/sdk/trace"
 
-	http2 "github.com/vikash/gofr/pkg/gofr/http"
+	gofrHTTP "github.com/vikash/gofr/pkg/gofr/http"
 )
 
 // App is the main application in the gofr framework.
@@ -49,7 +49,7 @@ func New() *App {
 	}
 
 	app.httpServer = &httpServer{
-		router: http2.NewRouter(),
+		router: gofrHTTP.NewRouter(),
 		port:   port,
 	}
 
@@ -60,6 +60,8 @@ func New() *App {
 func NewCMD() *App {
 	app := newApp()
 	app.cmd = &cmd{}
+
+	// TODO - Override the logger in case of CMD, as we do not want the out to interfere with logs.
 
 	return app
 }
