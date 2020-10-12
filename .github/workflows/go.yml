@@ -40,7 +40,7 @@ jobs:
 
     - name: Test
       run: |
-        go test ./... -v -covermode=atomic -coverprofile profile.cov -coverpkg=./...
+        go test ./... -v -coverprofile profile.cov -coverpkg=./...
         go tool cover -func profile.cov
       
     - name: Send coverage to coveralls
