@@ -29,6 +29,7 @@ func NewRedisClient(config RedisConfig) (*redis.Client, error) {
 	}
 
 	rc.AddHook(redisext.OpenTelemetryHook{})
+
 	return rc, nil
 }
 
