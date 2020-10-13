@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis/v8"
+	"github.com/go-redis/redis/v8/redisext"
 )
 
 type RedisConfig struct {
@@ -27,6 +28,7 @@ func NewRedisClient(config RedisConfig) (*redis.Client, error) {
 		return nil, err
 	}
 
+	rc.AddHook(redisext.OpenTelemetryHook{})
 	return rc, nil
 }
 
