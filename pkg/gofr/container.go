@@ -1,7 +1,6 @@
 package gofr
 
 import (
-	"database/sql"
 	"strconv"
 
 	"github.com/go-redis/redis/v8"
@@ -15,7 +14,7 @@ import (
 type Container struct {
 	Logger
 	Redis *redis.Client
-	DB    *sql.DB
+	DB    *DB
 }
 
 func newContainer(config Config) *Container {
@@ -57,7 +56,7 @@ func newContainer(config Config) *Container {
 			Database: config.Get("DB_NAME"),
 		}
 		db, err := NewMYSQL(&conf)
-		c.DB = db
+		c.DB = &DB{db}
 
 		if err != nil {
 			c.Errorf("could not connect to database with config %v error: %v\n", conf, err)
