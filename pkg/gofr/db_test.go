@@ -2,12 +2,13 @@ package gofr
 
 import (
 	"context"
+	"testing"
+
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
-func getDB(t *testing.T) (*DB, sqlmock.Sqlmock){
+func getDB(t *testing.T) (*DB, sqlmock.Sqlmock) {
 	mockDB, mock, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
@@ -122,4 +123,80 @@ func TestDB_SelectSingleColumnFromStringToCustomString(t *testing.T) {
 	ids := make([]CustomStr, 0)
 	db.Select(context.TODO(), &ids, "select id from users")
 	assert.Equal(t, []CustomStr{"1", "2"}, ids)
+}
+
+func TestDB_SelectSingleRowMultiColumn(t *testing.T) {
+	db, mock := getDB(t)
+	defer db.DB.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "name", "image"}).
+		AddRow("1", "Vikash", "http://via.placeholder.com/150")
+	mock.ExpectQuery("^select 1 user*").
+		WillReturnRows(rows)
+
+	type user struct {
+		Name  string
+		ID    int
+		Image string
+	}
+	u := user{}
+	db.Select(context.TODO(), &u, "select 1 user")
+	assert.Equal(t, user{
+		Name:  "Vikash",
+		ID:    1,
+		Image: "http://via.placeholder.com/150",
+	}, u)
+}
+
+func TestDB_SelectSingleRowMultiColumnWithTags(t *testing.T) {
+	db, mock := getDB(t)
+	defer db.DB.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "name", "image_url"}).
+		AddRow("1", "Vikash", "http://via.placeholder.com/150")
+	mock.ExpectQuery("^select 1 user*").
+		WillReturnRows(rows)
+
+	type user struct {
+		Name  string
+		ID    int
+		Image string `db:"image_url"`
+	}
+	u := user{}
+	db.Select(context.TODO(), &u, "select 1 user")
+	assert.Equal(t, user{
+		Name:  "Vikash",
+		ID:    1,
+		Image: "http://via.placeholder.com/150",
+	}, u)
+}
+
+func TestDB_SelectMultiRowMultiColumnWithTags(t *testing.T) {
+	db, mock := getDB(t)
+	defer db.DB.Close()
+
+	rows := sqlmock.NewRows([]string{"id", "name", "image_url"}).
+		AddRow("1", "Vikash", "http://via.placeholder.com/150").
+		AddRow("2", "Gofr", "")
+	mock.ExpectQuery("^select users*").
+		WillReturnRows(rows)
+
+	type user struct {
+		Name  string
+		ID    int
+		Image string `db:"image_url"`
+	}
+	users := []user{}
+	db.Select(context.TODO(), &users, "select users")
+	assert.Equal(t, []user{
+		{
+			Name:  "Vikash",
+			ID:    1,
+			Image: "http://via.placeholder.com/150",
+		},
+		{
+			Name: "Gofr",
+			ID:   2,
+		},
+	}, users)
 }

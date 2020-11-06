@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"fmt"
 	"reflect"
-	"strings"
 	"regexp"
+	"strings"
 )
 
 type DB struct {
@@ -40,45 +40,23 @@ func (d *DB) Select(ctx context.Context, data interface{}, query string, args ..
 
 		for rows.Next() {
 			val := reflect.New(rv.Type().Elem())
-			err = rows.Scan(val.Interface())
-			rv = reflect.Append(rv,val.Elem())
+			if rv.Type().Elem().Kind() == reflect.Struct {
+				d.rowsToStruct(rows, val)
+
+			} else {
+				err = rows.Scan(val.Interface())
+			}
+			rv = reflect.Append(rv, val.Elem())
 		}
 
 		if rvo.Elem().CanSet() {
 			rvo.Elem().Set(rv)
 		}
 
-		fmt.Println(rvo)
 	case reflect.Struct:
 		rows, _ := d.QueryContext(ctx, query, args...)
-
-		// Map fields and their indexes by normalised name
-		fieldNameIndex := map[string]int{}
-		for i := 0; i < rv.Type().NumField(); i++ {
-			var name string
-			f := rv.Type().Field(i)
-			tag := f.Tag.Get("db")
-			if tag != "" {
-				name = tag
-			} else {
-				name = ToSnakeCase(f.Name)
-			}
-			fieldNameIndex[name] = i
-		}
-
-		fields := []interface{}{}
-		columns, _ := rows.Columns()
-		for _, c := range columns {
-			if i, ok := fieldNameIndex[c]; ok {
-				fields = append(fields, rv.Field(i).Addr().Interface())
-			} else {
-				var i interface{}
-				fields = append(fields, &i)
-			}
-		}
-
 		for rows.Next() {
-			rows.Scan(fields...)
+			d.rowsToStruct(rows, rv)
 		}
 
 	default:
@@ -87,10 +65,48 @@ func (d *DB) Select(ctx context.Context, data interface{}, query string, args ..
 
 }
 
+func (d *DB) rowsToStruct(rows *sql.Rows, vo reflect.Value) {
+	v := vo
+	if vo.Kind() == reflect.Ptr {
+		v = vo.Elem()
+	}
+	// Map fields and their indexes by normalised name
+	fieldNameIndex := map[string]int{}
+	for i := 0; i < v.Type().NumField(); i++ {
+		var name string
+		f := v.Type().Field(i)
+		tag := f.Tag.Get("db")
+		if tag != "" {
+			name = tag
+		} else {
+			name = ToSnakeCase(f.Name)
+		}
+		fieldNameIndex[name] = i
+	}
+
+	fields := []interface{}{}
+	columns, _ := rows.Columns()
+	for _, c := range columns {
+		if i, ok := fieldNameIndex[c]; ok {
+			fields = append(fields, v.Field(i).Addr().Interface())
+		} else {
+			var i interface{}
+			fields = append(fields, &i)
+		}
+	}
+
+	rows.Scan(fields...)
+
+	if vo.CanSet() {
+		vo.Set(v)
+	}
+}
+
 var matchFirstCap = regexp.MustCompile("(.)([A-Z][a-z]+)")
-var matchAllCap   = regexp.MustCompile("([a-z0-9])([A-Z])")
+var matchAllCap = regexp.MustCompile("([a-z0-9])([A-Z])")
+
 func ToSnakeCase(str string) string {
 	snake := matchFirstCap.ReplaceAllString(str, "${1}_${2}")
-	snake  = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
+	snake = matchAllCap.ReplaceAllString(snake, "${1}_${2}")
 	return strings.ToLower(snake)
 }
