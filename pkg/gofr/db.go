@@ -13,6 +13,33 @@ type DB struct {
 	*sql.DB
 }
 
+// Select runs a query with args and binds the result of the query to the data.
+// data should ba a point to a slice, struct or any type. Slice will return multiple
+// objects whereas struct will return a single object.
+//
+// Example Usages:
+//
+// 1. Get multiple rows with only one column
+// 		ids := make([]int, 0)
+//		db.Select(ctx, &ids, "select id from users")
+//
+// 2. Get a single object from database
+// 		type user struct {
+//			Name  string
+//			ID    int
+//			Image string
+//		}
+//		u := user{}
+//		db.Select(ctx, &u, "select * from users where id=?", 1)
+//
+// 3. Get array of objects from multiple rows
+//			type user struct {
+//				Name  string
+//				ID    int
+//				Image string `db:"image_url"`
+//			}
+//			users := []user{}
+//			db.Select(ctx, &users, "select * from users")
 func (d *DB) Select(ctx context.Context, data interface{}, query string, args ...interface{}) {
 	// If context is done, it is not needed
 	if ctx.Err() != nil {
@@ -70,6 +97,7 @@ func (d *DB) rowsToStruct(rows *sql.Rows, vo reflect.Value) {
 	if vo.Kind() == reflect.Ptr {
 		v = vo.Elem()
 	}
+
 	// Map fields and their indexes by normalised name
 	fieldNameIndex := map[string]int{}
 	for i := 0; i < v.Type().NumField(); i++ {
