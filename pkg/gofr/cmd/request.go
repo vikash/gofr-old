@@ -30,6 +30,11 @@ func (r *Request) Param(key string) string {
 	return r.params[key]
 }
 
+// PathParam returns the value of the parameter for key. This is equivalent to Param
+func (r *Request) PathParam(key string) string {
+	return r.params[key]
+}
+
 func (r *Request) Context() context.Context {
 	return context.Background()
 }
