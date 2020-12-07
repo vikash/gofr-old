@@ -1,7 +1,10 @@
 package http
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -31,4 +34,24 @@ func (r *Request) Context() context.Context {
 
 func (r *Request) PathParam(key string) string {
 	return r.pathParams[key]
+}
+
+func (r *Request) Bind(i interface{}) error {
+	body, err := r.body()
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(body, &i)
+}
+
+func (r *Request) body() ([]byte, error) {
+	bodyBytes, err := ioutil.ReadAll(r.req.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	r.req.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
+
+	return bodyBytes, nil
 }

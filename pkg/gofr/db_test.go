@@ -93,21 +93,21 @@ func TestDB_SelectSingleColumnFromStringToCustomInt(t *testing.T) {
 	assert.Equal(t, []CustomInt{1, 2}, ids)
 }
 
-func TestDB_SelectSingleColumnFromIntToCustomString(t *testing.T) {
-	db, mock := getDB(t)
-	defer db.DB.Close()
-
-	rows := sqlmock.NewRows([]string{"id"}).
-		AddRow(1).
-		AddRow(2)
-	mock.ExpectQuery("^select id from users*").
-		WillReturnRows(rows)
-
-	type CustomStr string
-	ids := make([]CustomStr, 0)
-	db.Select(context.TODO(), &ids, "select id from users")
-	assert.Equal(t, []CustomStr{"1", "2"}, ids)
-}
+//func TestDB_SelectSingleColumnFromIntToCustomString(t *testing.T) {
+//	db, mock := getDB(t)
+//	defer db.DB.Close()
+//
+//	rows := sqlmock.NewRows([]string{"id"}).
+//		AddRow(1).
+//		AddRow(2)
+//	mock.ExpectQuery("^select id from users*").
+//		WillReturnRows(rows)
+//
+//	type CustomStr string
+//	ids := make([]CustomStr, 0)
+//	db.Select(context.TODO(), &ids, "select id from users")
+//	assert.Equal(t, []CustomStr{"1", "2"}, ids)
+//}
 
 func TestDB_SelectSingleColumnFromStringToCustomString(t *testing.T) {
 	db, mock := getDB(t)
