@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-
 	"github.com/vikash/gofr/pkg/gofr"
 )
 
@@ -24,6 +23,8 @@ func main() {
 	// Run the application
 	a.Run()
 }
+
+
 
 func HelloHandler(c *gofr.Context) (interface{}, error) {
 	name := c.Param("name")
