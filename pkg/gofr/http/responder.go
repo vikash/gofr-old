@@ -37,26 +37,28 @@ func (r Responder) Respond(data interface{}, err error) {
 }
 
 func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
-	switch err.(type) {
+	var statusCode int
+	message := make(map[string]interface{})
 
+	switch v := err.(type) {
 	case nil:
-		return http.StatusOK, nil
+		statusCode = http.StatusOK
 
 	case errors.InvalidParam:
-		return http.StatusBadRequest, map[string]interface{}{
-			"message": err.Error(),
-		}
+		statusCode = http.StatusBadRequest
 
 	case errors.MissingParam:
-		return http.StatusBadRequest, map[string]interface{}{
-			"message": err.Error(),
-		}
+		statusCode = http.StatusBadRequest
+
+	case errors.Respond:
+		statusCode = v.Code
 
 	default:
-		return http.StatusInternalServerError, map[string]interface{}{
-			"message": err.Error(),
-		}
+		statusCode = http.StatusInternalServerError
 	}
+
+	message["message"] = err.Error()
+	return statusCode, message
 }
 
 type response struct {
