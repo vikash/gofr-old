@@ -1,4 +1,4 @@
-module github.com/ezgo/gofr
+module github.com/zopsmart/ezgo/gofr
 
 go 1.15
 

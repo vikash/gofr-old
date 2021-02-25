@@ -3,7 +3,7 @@ package logging
 import (
 	"testing"
 
-	"github.com/ezgo/gofr/pkg/gofr/testutil"
+	"github.com/zopsmart/ezgo/gofr/pkg/gofr/testutil"
 )
 
 const testLogStatement = "hello log!"

@@ -3,9 +3,9 @@ package http
 import (
 	"net/http"
 
-	"github.com/ezgo/gofr/pkg/gofr/logging"
+	"github.com/zopsmart/ezgo/gofr/pkg/gofr/logging"
 
-	"github.com/ezgo/gofr/pkg/gofr/http/middleware"
+	"github.com/zopsmart/ezgo/gofr/pkg/gofr/http/middleware"
 
 	"github.com/gorilla/mux"
 )

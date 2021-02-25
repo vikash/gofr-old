@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 
-	"github.com/ezgo/gofr/pkg/gofr"
+	"github.com/zopsmart/ezgo/gofr/pkg/gofr"
 )
 
 func main() {
