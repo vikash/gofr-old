@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/vikash/gofr/pkg/gofr"
+	"github.com/zopsmart/ezgo/pkg/gofr"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"os"
 	"regexp"
 
-	cmd2 "github.com/vikash/gofr/pkg/gofr/cmd"
+	cmd2 "github.com/zopsmart/ezgo/pkg/gofr/cmd"
 )
 
 type cmd struct {

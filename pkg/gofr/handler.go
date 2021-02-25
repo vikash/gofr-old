@@ -3,7 +3,7 @@ package gofr
 import (
 	"net/http"
 
-	http2 "github.com/vikash/gofr/pkg/gofr/http"
+	http2 "github.com/zopsmart/ezgo/pkg/gofr/http"
 )
 
 type Handler func(c *Context) (interface{}, error)
