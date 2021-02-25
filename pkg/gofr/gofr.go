@@ -10,10 +10,10 @@ import (
 
 	"go.opentelemetry.io/otel/exporters/trace/zipkin"
 
-	"github.com/vikash/gofr/pkg/gofr/config"
+	"github.com/ezgo/gofr/pkg/gofr/config"
 	"go.opentelemetry.io/otel/sdk/trace"
 
-	gofrHTTP "github.com/vikash/gofr/pkg/gofr/http"
+	gofrHTTP "github.com/ezgo/gofr/pkg/gofr/http"
 )
 
 // App is the main application in the gofr framework.

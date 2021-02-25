@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/vikash/gofr/pkg/gofr/testutil"
+	"github.com/ezgo/gofr/pkg/gofr/testutil"
 )
 
 func TestResponder_Respond(t *testing.T) {

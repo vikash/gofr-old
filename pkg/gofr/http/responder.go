@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	resTypes "github.com/vikash/gofr/pkg/gofr/http/response"
+	resTypes "github.com/ezgo/gofr/pkg/gofr/http/response"
 )
 
 func NewResponder(w http.ResponseWriter) *Responder {

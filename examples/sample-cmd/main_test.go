@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/vikash/gofr/pkg/gofr/testutil"
+	"github.com/ezgo/gofr/pkg/gofr/testutil"
 )
 
 // TestCMDRunWithNoArg checks that if no subcommand is found then error comes on stderr.
