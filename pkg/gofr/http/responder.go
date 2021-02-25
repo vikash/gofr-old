@@ -5,8 +5,6 @@ import (
 	"net/http"
 
 	"github.com/zopsmart/ezgo/pkg/gofr/errors"
-
-	//"github.com/zopsmart/ezgo/pkg/gofr/errors"
 	resTypes "github.com/zopsmart/ezgo/pkg/gofr/http/response"
 )
 
