@@ -50,7 +50,7 @@ func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
 	case errors.MissingParam:
 		statusCode = http.StatusBadRequest
 
-	case errors.Respond:
+	case errors.Response:
 		statusCode = v.Code
 
 	default:
