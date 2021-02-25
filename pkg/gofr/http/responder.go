@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/zopsmart/ezgo/pkg/gofr/errors"
+
+	//"github.com/zopsmart/ezgo/pkg/gofr/errors"
 	resTypes "github.com/zopsmart/ezgo/pkg/gofr/http/response"
 )
 
@@ -37,12 +39,13 @@ func (r Responder) Respond(data interface{}, err error) {
 }
 
 func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
+
 	var statusCode int
 	message := make(map[string]interface{})
 
-	switch v := err.(type) {
+	switch err.(type) {
 	case nil:
-		statusCode = http.StatusOK
+		return http.StatusOK, nil
 
 	case errors.InvalidParam:
 		statusCode = http.StatusBadRequest
@@ -50,15 +53,14 @@ func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
 	case errors.MissingParam:
 		statusCode = http.StatusBadRequest
 
-	case errors.Response:
-		statusCode = v.Code
-
 	default:
 		statusCode = http.StatusInternalServerError
 	}
 
 	message["message"] = err.Error()
+
 	return statusCode, message
+
 }
 
 type response struct {
