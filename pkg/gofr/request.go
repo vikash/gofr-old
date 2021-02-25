@@ -2,6 +2,7 @@ package gofr
 
 import (
 	"context"
+	"net/http"
 )
 
 type Request interface {
@@ -9,4 +10,5 @@ type Request interface {
 	Param(string) string
 	PathParam(string) string
 	Bind(interface{}) error
+	Header() http.Header
 }

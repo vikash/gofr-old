@@ -55,3 +55,7 @@ func (r *Request) body() ([]byte, error) {
 
 	return bodyBytes, nil
 }
+
+func (r *Request) Header() http.Header {
+	return r.req.Header
+}
