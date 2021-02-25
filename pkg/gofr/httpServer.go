@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	http2 "github.com/zopsmart/ezgo/gofr/pkg/gofr/http"
+	http2 "github.com/zopsmart/ezgo/pkg/gofr/http"
 )
 
 type httpServer struct {

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/zopsmart/ezgo/gofr/pkg/gofr"
+import "github.com/zopsmart/ezgo/pkg/gofr"
 
 func main() {
 	app := gofr.NewCMD()
