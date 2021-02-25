@@ -43,7 +43,7 @@ func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
 	var statusCode int
 	message := make(map[string]interface{})
 
-	switch err.(type) {
+	switch v := err.(type) {
 	case nil:
 		return http.StatusOK, nil
 
@@ -52,6 +52,9 @@ func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
 
 	case errors.MissingParam:
 		statusCode = http.StatusBadRequest
+
+	case errors.Response:
+		statusCode = v.Code
 
 	default:
 		statusCode = http.StatusInternalServerError
