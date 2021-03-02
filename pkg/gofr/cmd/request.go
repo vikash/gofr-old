@@ -69,3 +69,7 @@ func (r *Request) Bind(i interface{}) error {
 
 	return nil
 }
+
+func (r *Request) Header(key string) string {
+	return ""
+}

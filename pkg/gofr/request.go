@@ -9,4 +9,5 @@ type Request interface {
 	Param(string) string
 	PathParam(string) string
 	Bind(interface{}) error
+	Header(string) string
 }

@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	resTypes "github.com/vikash/gofr/pkg/gofr/http/response"
+	"github.com/zopsmart/ezgo/pkg/gofr/errors"
+	resTypes "github.com/zopsmart/ezgo/pkg/gofr/http/response"
 )
 
 func NewResponder(w http.ResponseWriter) *Responder {
@@ -36,13 +37,31 @@ func (r Responder) Respond(data interface{}, err error) {
 }
 
 func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
-	if err == nil {
+
+	var statusCode int
+	message := make(map[string]interface{})
+
+	switch v := err.(type) {
+	case nil:
 		return http.StatusOK, nil
+
+	case errors.InvalidParam:
+		statusCode = http.StatusBadRequest
+
+	case errors.MissingParam:
+		statusCode = http.StatusBadRequest
+
+	case errors.Response:
+		statusCode = v.Code
+
+	default:
+		statusCode = http.StatusInternalServerError
 	}
 
-	return http.StatusInternalServerError, map[string]interface{}{
-		"message": err.Error(),
-	}
+	message["message"] = err.Error()
+
+	return statusCode, message
+
 }
 
 type response struct {

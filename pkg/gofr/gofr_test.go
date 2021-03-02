@@ -3,7 +3,7 @@ package gofr
 import (
 	"testing"
 
-	"github.com/vikash/gofr/pkg/gofr/testutil"
+	"github.com/zopsmart/ezgo/pkg/gofr/testutil"
 )
 
 func TestNewCMD(t *testing.T) {
