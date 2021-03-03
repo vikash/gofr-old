@@ -15,7 +15,7 @@ type httpServer struct {
 
 func (s *httpServer) Run(container *Container) {
 	var srv *http.Server
-	fmt.Println("in cors")
+
 	container.Logf("Starting server on port: %d\n", s.port)
 	cors := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://*", "*"},
