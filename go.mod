@@ -8,7 +8,6 @@ require (
 	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/go-redis/redis/v8 v8.0.0-beta.9
 	github.com/go-sql-driver/mysql v1.5.0
-	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.3.0
 	github.com/onsi/ginkgo v1.14.1 // indirect
