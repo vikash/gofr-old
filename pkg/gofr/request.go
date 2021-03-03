@@ -2,6 +2,7 @@ package gofr
 
 import (
 	"context"
+	"mime/multipart"
 )
 
 type Request interface {
@@ -9,4 +10,8 @@ type Request interface {
 	Param(string) string
 	PathParam(string) string
 	Bind(interface{}) error
+	FormFile(string) (multipart.File, *multipart.FileHeader, error)
+	ParseForm() error
+	FormValue(string) string
+	ParseMultiPartForm(int64) error
 }

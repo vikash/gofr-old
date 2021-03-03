@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -44,6 +45,23 @@ func (r *Request) Bind(i interface{}) error {
 
 	return json.Unmarshal(body, &i)
 }
+
+func (r *Request) ParseForm() error {
+	return r.req.ParseForm()
+}
+
+func(r *Request) FormValue(key string) string{
+	return r.req.FormValue(key)
+}
+
+func (r *Request) ParseMultiPartForm(maxMemory int64) error {
+	return r.req.ParseMultipartForm(maxMemory)
+}
+
+func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error) {
+	return r.req.FormFile(key)
+}
+
 
 func (r *Request) body() ([]byte, error) {
 	bodyBytes, err := ioutil.ReadAll(r.req.Body)
