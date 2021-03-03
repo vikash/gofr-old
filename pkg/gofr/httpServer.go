@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gorilla/handlers"
-
+	"github.com/rs/cors"
 	http2 "github.com/zopsmart/ezgo/pkg/gofr/http"
 )
 
@@ -16,14 +15,18 @@ type httpServer struct {
 
 func (s *httpServer) Run(container *Container) {
 	var srv *http.Server
-
+	fmt.Println("in cors")
 	container.Logf("Starting server on port: %d\n", s.port)
-	headers := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
-	methods := handlers.AllowedMethods([]string{"GET", "PUT", "POST", "DELETE", "OPTIONS"})
-	origins := handlers.AllowedOrigins([]string{"*"})
+	cors := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://*", "*"},
+		AllowedHeaders: []string{"Accept", "Accept-Language", "Content-Type", "Companyid"},
+		AllowedMethods: []string{"GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"},
+		Debug:          false,
+	})
+
 	srv = &http.Server{
 		Addr:    fmt.Sprintf(":%d", s.port),
-		Handler: handlers.CORS(headers, methods, origins)(s.router),
+		Handler: cors.Handler(s.router),
 	}
 
 	container.Error(srv.ListenAndServe())
