@@ -18,8 +18,8 @@ func (s *httpServer) Run(container *Container) {
 
 	container.Logf("Starting server on port: %d\n", s.port)
 	cors := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://*", "*"},
-		AllowedHeaders: []string{"Accept", "Accept-Language", "Content-Type", "Companyid"},
+		AllowedOrigins: []string{"*"},
+		AllowedHeaders: []string{"*"},
 		AllowedMethods: []string{"GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"},
 		Debug:          false,
 	})
