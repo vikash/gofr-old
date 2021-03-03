@@ -26,7 +26,14 @@ type handler struct {
 	container *Container
 }
 
+func setupResponse(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	setupResponse(&w)
 	c := newContext(http2.NewResponder(w), http2.NewRequest(r), h.container)
 	defer c.Trace("gofr-handler").End()
 	c.responder.Respond(h.function(c))
