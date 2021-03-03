@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"mime/multipart"
 	"reflect"
 	"strconv"
 )
@@ -68,4 +69,21 @@ func (r *Request) Bind(i interface{}) error {
 	}
 
 	return nil
+}
+
+
+func (r *Request) ParseForm() error {
+	return r.ParseForm()
+}
+
+func(r *Request) FormValue(key string) string{
+	return r.FormValue(key)
+}
+
+func (r *Request) ParseMultiPartForm(maxMemory int64) error {
+	return r.ParseMultiPartForm(maxMemory)
+}
+
+func (r *Request) FormFile(key string) (multipart.File, *multipart.FileHeader, error) {
+	return r.FormFile(key)
 }
