@@ -18,7 +18,6 @@ type Router struct {
 func NewRouter() *Router {
 	muxRouter := mux.NewRouter().StrictSlash(false)
 	muxRouter.Use(
-		middleware.DefaultHeaders,
 		middleware.Tracer,
 		middleware.Logging(logging.NewLogger(logging.INFO)),
 	)
@@ -47,6 +46,9 @@ func (rou *Router) Add(method, pattern string, handler http.Handler) {
 
 func (rou *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
+
 	if r.Method == "OPTIONS" {
 		w.WriteHeader(http.StatusOK)
 		return
