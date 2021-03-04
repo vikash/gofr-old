@@ -5,8 +5,8 @@ import (
 
 	"github.com/vikash/gofr/pkg/gofr/logging"
 
-	"github.com/vikash/gofr/pkg/gofr/http/middleware"
 	"github.com/rs/cors"
+	"github.com/vikash/gofr/pkg/gofr/http/middleware"
 
 	"github.com/gorilla/mux"
 )
@@ -18,11 +18,11 @@ type Router struct {
 func NewRouter() *Router {
 	muxRouter := mux.NewRouter().StrictSlash(false)
 	muxRouter.Use(
-		mux.CORSMethodMiddleware(muxRouter),
+		middleware.DefaultHeaders,
 		middleware.Tracer,
 		middleware.Logging(logging.NewLogger(logging.INFO)),
 	)
-	
+
 	cors := cors.New(cors.Options{
 		AllowedOrigins:         []string{"*"},
 		AllowOriginRequestFunc: func(r *http.Request, origin string) bool { return true },
@@ -35,7 +35,6 @@ func NewRouter() *Router {
 	})
 
 	muxRouter.Use(cors.Handler)
-
 
 	return &Router{
 		Router: *muxRouter,
