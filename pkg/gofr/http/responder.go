@@ -19,7 +19,7 @@ func (r Responder) Respond(data interface{}, err error) {
 	r.w.Header().Set("Content-type", "application/json")
 	r.w.Header().Set("Access-Control-Allow-Headers", "*")
 	r.w.Header().Set("Access-Control-Allow-Origin", "*")
-	r.w.Header().Set("Access-Control-Allow-Methods", "*")
+	r.w.Header().Set("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS")
 
 	statusCode, errorObj := r.HTTPStatusFromError(err)
 	r.w.WriteHeader(statusCode)
