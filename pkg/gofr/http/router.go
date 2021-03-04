@@ -17,6 +17,7 @@ type Router struct {
 func NewRouter() *Router {
 	muxRouter := mux.NewRouter().StrictSlash(false)
 	muxRouter.Use(
+		mux.CORSMethodMiddleware(muxRouter),
 		middleware.Tracer,
 		middleware.Logging(logging.NewLogger(logging.INFO)),
 	)
