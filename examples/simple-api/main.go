@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/zopsmart/ezgo/pkg/gofr/exists"
+	ezgoErr "github.com/zopsmart/ezgo/pkg/gofr/errors"
 
 	"github.com/go-redis/redis/v8"
 
@@ -55,7 +55,7 @@ func PostHandler(c *gofr.Context) (interface{}, error) {
 	row, err := c.DB.Exec(query, e.ID, e.Name)
 	if err != nil {
 		// Duplicate entry
-		return nil, exists.DuplicateEntity{}
+		return nil, nil
 	}
 
 	id, _ := row.LastInsertId()
@@ -63,7 +63,7 @@ func PostHandler(c *gofr.Context) (interface{}, error) {
 		return -1, errors.New("record not found")
 	}
 
-	return id, exists.Entity{}
+	return id, ezgoErr.NewEntity{}
 }
 
 func ErrorHandler(c *gofr.Context) (interface{}, error) {
