@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/zopsmart/ezgo/pkg/gofr/exists"
+
 	"github.com/go-redis/redis/v8"
 
 	"github.com/zopsmart/ezgo/pkg/gofr"
@@ -16,6 +18,7 @@ func main() {
 
 	// Add all the routes
 	a.GET("/hello", HelloHandler)
+	a.POST("/hello", PostHandler)
 	a.GET("/error", ErrorHandler)
 	a.GET("/redis", RedisHandler)
 	a.GET("/trace", TraceHandler)
@@ -33,6 +36,36 @@ func HelloHandler(c *gofr.Context) (interface{}, error) {
 	}
 
 	return fmt.Sprintf("Hello %s!", name), nil
+}
+
+// Use case for 200 and 201 status codes in ezgo.
+type entity struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func PostHandler(c *gofr.Context) (interface{}, error) {
+	var e entity
+	err := c.Bind(&e)
+	fmt.Println(e)
+	if err != nil {
+		return nil, errors.New("error JSON format")
+	}
+
+	const query = `INSERT INTO names(id, name) values(?,?)`
+	row, err := c.DB.Exec(query, e.ID, e.Name)
+	if err != nil {
+		// Duplicate entry.
+		fmt.Println(err)
+		return nil, exists.DuplicateEntity{}
+	}
+
+	id, _ := row.LastInsertId()
+	if id == -1 {
+		return -1, errors.New("record not found")
+	}
+
+	return id, exists.Entity{}
 }
 
 func ErrorHandler(c *gofr.Context) (interface{}, error) {

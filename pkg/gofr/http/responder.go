@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/zopsmart/ezgo/pkg/gofr/exists"
+
 	"github.com/zopsmart/ezgo/pkg/gofr/errors"
 	resTypes "github.com/zopsmart/ezgo/pkg/gofr/http/response"
 )
@@ -44,6 +46,12 @@ func (r Responder) HTTPStatusFromError(err error) (int, interface{}) {
 	switch v := err.(type) {
 	case nil:
 		return http.StatusOK, nil
+
+	case exists.DuplicateEntity:
+		return http.StatusOK, nil
+
+	case exists.Entity:
+		return http.StatusCreated, nil
 
 	case errors.InvalidParam:
 		statusCode = http.StatusBadRequest
