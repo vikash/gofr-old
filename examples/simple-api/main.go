@@ -47,7 +47,6 @@ type entity struct {
 func PostHandler(c *gofr.Context) (interface{}, error) {
 	var e entity
 	err := c.Bind(&e)
-	fmt.Println(e)
 	if err != nil {
 		return nil, errors.New("error JSON format")
 	}
@@ -55,8 +54,7 @@ func PostHandler(c *gofr.Context) (interface{}, error) {
 	const query = `INSERT INTO names(id, name) values(?,?)`
 	row, err := c.DB.Exec(query, e.ID, e.Name)
 	if err != nil {
-		// Duplicate entry.
-		fmt.Println(err)
+		// Duplicate entry
 		return nil, exists.DuplicateEntity{}
 	}
 
