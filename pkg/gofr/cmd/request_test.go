@@ -4,7 +4,7 @@ import "testing"
 
 func TestRequest_Bind(t *testing.T) {
 	// TODO: Only fields starting with Capital letter can be 'bind' right now.
-	r := NewRequest([]string{"command", "-Name=gofr", "-Valid=true", "-Value=12", "-test","--name=Gofr"})
+	r := NewRequest([]string{"command", "-Name=gofr", "-Valid=true", "-Value=12", "-test", "--name=Gofr"})
 
 	if r.Param("Name") != "gofr" {
 		t.Error("Param parse error.")
@@ -17,7 +17,8 @@ func TestRequest_Bind(t *testing.T) {
 	if r.PathParam("Value") != "12" {
 		t.Error("PathParam error.")
 	}
-	if r.Param("name")!="Gofr"{
+
+	if r.Param("name") != "Gofr" {
 		t.Error("Param parse error")
 	}
 
