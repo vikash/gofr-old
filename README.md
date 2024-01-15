@@ -1,3 +1,5 @@
+New developments happening at https://github.com/gofr-dev/gofr 
+
 # gofr
 ![Build Status](https://github.com/vikash/gofr/workflows/Go/badge.svg)
 [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://raw.githubusercontent.com/jmoiron/sqlx/master/LICENSE)
